@@ -1,0 +1,37 @@
+<layout id="WatchFace">
+    <drawable class="Background" />
+
+
+
+    <label id="BatteryPercentage" x="121" y="21" font="@Fonts.customSmall" color="Graphics.COLOR_DK_GRAY" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    
+    <label id="Hour" x="96" y="52" font="@Fonts.custom" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+    <label id="Minute" x="95" y="52" font="@Fonts.custom" color="Graphics.COLOR_LT_GRAY" justification="Graphics.TEXT_JUSTIFY_LEFT" />
+
+    <label id="DayOfWeek" x="205" y="75" font="@Fonts.customSmall" color="Graphics.COLOR_WHITE"  justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="DayOfMonth"   x="203" y="96" font="@Fonts.customSmall" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_RIGHT"/>
+    <label id="Month" x="205" y="96" font="@Fonts.customSmall" color="Graphics.COLOR_DK_GRAY" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
+
+    <label id="HRAct" x="35" y="166" font="@Fonts.customSmallest" color="Graphics.COLOR_LT_GRAY" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+
+    <label id="Steps"  x="210" y="134" font="@Fonts.customSmallest" color="Graphics.COLOR_LT_GRAY" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+
+    <bitmap id="DnD" x="52" y="22" filename="../drawables/dnd.png" visible="false"/>
+    <bitmap id="DnDRed" x="52" y="22" filename="../drawables/dndRed.png" visible="false"/>
+
+    <bitmap id="Battery" filename="../drawables/battery.png" x="87" y="0" visible="false"/>
+    <bitmap id="BatteryRed" filename="../drawables/batteryRed.png" x="87" y="0" visible="false"/>
+    <bitmap id="BatteryBlue" filename="../drawables/batteryBlue.png" x="87" y="0" visible="false"/>
+
+    <bitmap id="Alarms" x="155" y="20" filename="../drawables/alarm.png" visible="false"/>
+    <bitmap id="AlarmsRed" x="155" y="20" filename="../drawables/alarmRed.png" visible="false"/>
+
+    <bitmap id="StepsIcon" x="197" y="154" filename="../drawables/steps.png" visible="true"/>
+    <bitmap id="HR" x="21" y="142" filename="../drawables/hr.png" visible="true"/>
+
+    <bitmap id="Bluetooth" x="80" y="207" filename="../drawables/bluetooth.png" visible="false"/>
+    <bitmap id="BluetoothRed" x="80" y="207" filename="../drawables/bluetoothRed.png" visible="false"/>
+    
+    <bitmap id="Notifications" x="127" y="207" filename="../drawables/notifications.png" visible="false"/>
+    <bitmap id="NotificationsRed" x="127" y="207" filename="../drawables/notificationsRed.png" visible="false"/>
+</layout>

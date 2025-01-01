@@ -1,0 +1,5 @@
+<fonts>
+    <font id="custom" filename="custom.fnt"/>
+    <font id="customSmall" filename="customSmall.fnt"/>
+    <font id="customSmallest" filename="customSmallest.fnt"/>
+</fonts>
