@@ -9,6 +9,8 @@ import Toybox.Activity;
 
 class MonoToneView extends WatchUi.WatchFace {
     const smallestFont = WatchUi.loadResource(@Rez.Fonts.customSmallest);
+    const smallFont = WatchUi.loadResource(@Rez.Fonts.customSmall);
+    const bigFont = WatchUi.loadResource(@Rez.Fonts.custom);
     //var fiveMin = new Time.Duration(1200);
     const graphX = 54;
     const graphY = 143;
@@ -103,11 +105,13 @@ class MonoToneView extends WatchUi.WatchFace {
         }
 
         switch (Application.Properties.getValue("ExtraWidget") as Number){
-            case 0x000000:
-                drawHeartRateGraph(dc);
+            case 0x00000:
                 break;
             case 0x000001:
-                //drawSpeedLabel(dc);
+                drawHeartRateGraph(dc);
+                break;
+            case 0x000002:
+                drawSpeedLabel(dc,infos);
                 break;
         }
     }
@@ -115,6 +119,13 @@ class MonoToneView extends WatchUi.WatchFace {
     function onHide() as Void {}
     function onExitSleep() as Void {}
     function onEnterSleep() as Void {}
+
+    function drawSpeedLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
+        var speed = infos.currentSpeed;
+        var speedString = speed.format("%d");
+        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(graphX+graphWidth/2, graphY-20, bigFont, speedString, Graphics.TEXT_JUSTIFY_CENTER);
+    }
 
     function drawHeartRateGraph(dc as Dc) as Void {
 
