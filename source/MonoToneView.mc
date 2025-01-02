@@ -29,30 +29,10 @@ class MonoToneView extends WatchUi.WatchFace {
 
     function onShow() as Void {}
 /*
-    function onUpdate(dc as Dc) as Void {
-        // Get the current time and format it correctly
-        var timeFormat = "$1$:$2$";
-        var clockTime = System.getClockTime();
-        var hours = clockTime.hour;
-        if (!System.getDeviceSettings().is24Hour) {
-            if (hours > 12) {
-                hours = hours - 12;
-            }
-        } else {
-            if (Application.Properties.getValue("UseMilitaryFormat")) {
-                timeFormat = "$1$$2$";
-                hours = hours.format("%02d");
-            }
-        }
-        var timeString = Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]);
-
         // Update the view
         var view = View.findDrawableById("TimeLabel") as Text;
         view.setColor(Application.Properties.getValue("ForegroundColor") as Number);
         view.setText(timeString);
-
-        // Call the parent onUpdate function to redraw the layout
-        View.onUpdate(dc);
     }
 */
     function onUpdate(dc as Dc) as Void {
@@ -122,7 +102,14 @@ class MonoToneView extends WatchUi.WatchFace {
             colorBattery(WHITE);
         }
 
-        drawHeartRateGraph(dc);
+        switch (Application.Properties.getValue("ExtraWidget") as Number){
+            case 0x000000:
+                drawHeartRateGraph(dc);
+                break;
+            case 0x000001:
+                //drawSpeedLabel(dc);
+                break;
+        }
     }
 
     function onHide() as Void {}
