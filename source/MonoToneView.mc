@@ -30,13 +30,7 @@ class MonoToneView extends WatchUi.WatchFace {
     }
 
     function onShow() as Void {}
-/*
-        // Update the view
-        var view = View.findDrawableById("TimeLabel") as Text;
-        view.setColor(Application.Properties.getValue("ForegroundColor") as Number);
-        view.setText(timeString);
-    }
-*/
+
     function onUpdate(dc as Dc) as Void {
         View.onUpdate(dc);
         var date = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
