@@ -17,4 +17,6 @@
     <string id="hrGraph">Heart Rate Graph</string>
     <string id="speedLabel">Speed Label</string>
     <string id="empty">Empty</string>
+    <string id="caloriesLabel">Calories Label</string>
+    <string id="altitudeLabel">Altitude Label</string>
 </strings>

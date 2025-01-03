@@ -113,12 +113,33 @@ class MonoToneView extends WatchUi.WatchFace {
             case 0x000002:
                 drawSpeedLabel(dc,infos);
                 break;
+            case 0x000003:
+                drawCaloriesLabel(dc,infos);
+                break;
+            case 0x000004:
+                drawAltitudeLabel(dc,infos);
+                break;
+
         }
     }
 
     function onHide() as Void {}
     function onExitSleep() as Void {}
     function onEnterSleep() as Void {}
+
+    function drawCaloriesLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
+        var calories = infos.calories;
+        var caloriesString = calories!=null ? calories.format("%d") : 0;
+        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(graphX+graphWidth/2, graphY-20, bigFont, caloriesString, Graphics.TEXT_JUSTIFY_CENTER);
+    }
+
+    function drawAltitudeLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
+        var altitude = infos.altitude;
+        var altitudeString = altitude!=null ? altitude.format("%d") : 0;
+        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(graphX+graphWidth/2, graphY-20, bigFont, altitudeString, Graphics.TEXT_JUSTIFY_CENTER);
+    }
 
     function drawSpeedLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
         var speed = infos.currentSpeed;
