@@ -2,14 +2,6 @@
 
 A sleek, minimalist, monotone watchface designed specifically for the Garmin Fenix 5 Plus. This watchface focuses on simplicity and readability, featuring an uncluttered interface.
 
-## Features
-
-- **Monochrome Design**: Uses a single color tone for a clean and understated aesthetic.
-- **Customizable Data Fields**: Choose which data fields (time, date, steps, heart rate, etc.) you want displayed.
-- **Optimized for Readability**: Large, high-contrast fonts ensure easy reading in various lighting conditions.
-- **Battery Efficient**: Minimalistic design ensures low impact on battery life.
-- **Simple Configuration**: Easy-to-use settings accessible via the Garmin Connect IQ app.
-
 ## Compatibility
 
 - Designed for Garmin Fenix 5 Plus.
