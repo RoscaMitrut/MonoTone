@@ -2,4 +2,5 @@
     <font id="custom" filename="custom.fnt"/>
     <font id="customSmall" filename="customSmall.fnt"/>
     <font id="customSmallest" filename="customSmallest.fnt"/>
+    <font id="customMedium" filename="customMedium.fnt"/>
 </fonts>
