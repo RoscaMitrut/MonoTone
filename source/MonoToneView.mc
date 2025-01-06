@@ -12,6 +12,7 @@ class MonoToneView extends WatchUi.WatchFace {
     const smallFont = WatchUi.loadResource(@Rez.Fonts.customSmall);
     const bigFont = WatchUi.loadResource(@Rez.Fonts.custom);
     const mediumFont = WatchUi.loadResource(@Rez.Fonts.customMedium);
+    const smallestLettersFont = WatchUi.loadResource(@Rez.Fonts.customSmallestLetters);
     //var fiveMin = new Time.Duration(1200);
     const graphX = 54;
     const graphY = 143;
@@ -127,6 +128,8 @@ class MonoToneView extends WatchUi.WatchFace {
         var caloriesString = calories!=null ? calories.format("%d") : 0;
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(120, graphY, mediumFont, caloriesString, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(120,  graphY - 13, smallestLettersFont, "CALORIES - KCAL", Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     function drawAltitudeLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
@@ -134,6 +137,8 @@ class MonoToneView extends WatchUi.WatchFace {
         var altitudeString = altitude!=null ? altitude.format("%d") : 0;
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(120, graphY, mediumFont, altitudeString, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(120,  graphY - 13, smallestLettersFont, "ALTITUDE - METERS", Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     function drawSpeedLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
@@ -141,6 +146,8 @@ class MonoToneView extends WatchUi.WatchFace {
         var speedString = speed.format("%d");
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(graphX+graphWidth/2, graphY, mediumFont, speedString, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(120,  graphY - 13, smallestLettersFont, "SPEED - KM/HR", Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     function drawHeartRateGraph(dc as Dc) as Void {

@@ -3,4 +3,5 @@
     <font id="customSmall" filename="customSmall.fnt"/>
     <font id="customSmallest" filename="customSmallest.fnt"/>
     <font id="customMedium" filename="customMedium.fnt"/>
+    <font id="customSmallestLetters" filename="customSmallestLetters.fnt"/>
 </fonts>
