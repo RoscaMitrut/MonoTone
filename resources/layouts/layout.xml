@@ -5,16 +5,16 @@
 
     <label id="BatteryPercentage" x="121" y="21" font="@Fonts.customSmall" color="Graphics.COLOR_DK_GRAY" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
-    <label id="Hour" x="96" y="52" font="@Fonts.custom" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_RIGHT" />
-    <label id="Minute" x="95" y="52" font="@Fonts.custom" color="Graphics.COLOR_LT_GRAY" justification="Graphics.TEXT_JUSTIFY_LEFT" />
+    <label id="Hour" x="96" y="52" font="@Fonts.customBig" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_RIGHT" />
+    <label id="Minute" x="95" y="52" font="@Fonts.customBig" color="Graphics.COLOR_LT_GRAY" justification="Graphics.TEXT_JUSTIFY_LEFT" />
 
     <label id="DayOfWeek" x="205" y="75" font="@Fonts.customSmall" color="Graphics.COLOR_WHITE"  justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     <label id="DayOfMonth"   x="203" y="96" font="@Fonts.customSmall" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_RIGHT"/>
     <label id="Month" x="205" y="96" font="@Fonts.customSmall" color="Graphics.COLOR_DK_GRAY" justification="Graphics.TEXT_JUSTIFY_LEFT"/>
 
-    <label id="HRAct" x="35" y="166" font="@Fonts.customSmallest" color="Graphics.COLOR_LT_GRAY" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="HRAct" x="35" y="166" font="@Fonts.customTiny" color="Graphics.COLOR_LT_GRAY" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 
-    <label id="Steps"  x="210" y="134" font="@Fonts.customSmallest" color="Graphics.COLOR_LT_GRAY" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
+    <label id="Steps"  x="210" y="134" font="@Fonts.customTiny" color="Graphics.COLOR_LT_GRAY" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
 
     <bitmap id="DnD" x="52" y="22" filename="../drawables/dnd.png" visible="false"/>
     <bitmap id="DnDRed" x="52" y="22" filename="../drawables/dndRed.png" visible="false"/>

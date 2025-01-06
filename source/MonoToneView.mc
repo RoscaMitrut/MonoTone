@@ -8,11 +8,10 @@ import Toybox.ActivityMonitor;
 import Toybox.Activity;
 
 class MonoToneView extends WatchUi.WatchFace {
-    const smallestFont = WatchUi.loadResource(@Rez.Fonts.customSmallest);
-    const smallFont = WatchUi.loadResource(@Rez.Fonts.customSmall);
-    const bigFont = WatchUi.loadResource(@Rez.Fonts.custom);
-    const mediumFont = WatchUi.loadResource(@Rez.Fonts.customMedium);
-    const smallestLettersFont = WatchUi.loadResource(@Rez.Fonts.customSmallestLetters);
+    const customTinyFont = WatchUi.loadResource(@Rez.Fonts.customTiny);
+    const customSmallFont = WatchUi.loadResource(@Rez.Fonts.customSmall);
+    const customMediumFont = WatchUi.loadResource(@Rez.Fonts.customMedium);
+    const customBigFont = WatchUi.loadResource(@Rez.Fonts.customBig);
     //var fiveMin = new Time.Duration(1200);
     const graphX = 54;
     const graphY = 143;
@@ -127,27 +126,28 @@ class MonoToneView extends WatchUi.WatchFace {
         var calories = infos.calories;
         var caloriesString = calories!=null ? calories.format("%d") : 0;
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(120, graphY, mediumFont, caloriesString, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(120, graphY, customMediumFont, caloriesString, Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(120,  graphY - 13, smallestLettersFont, "CALORIES - KCAL", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(120,  graphY - 13, customSmallFont, "CALORIES - KCAL", Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     function drawAltitudeLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
         var altitude = infos.altitude;
         var altitudeString = altitude!=null ? altitude.format("%d") : 0;
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(120, graphY, mediumFont, altitudeString, Graphics.TEXT_JUSTIFY_CENTER);
+        System.println(altitudeString);
+        dc.drawText(120, graphY, customMediumFont, altitudeString, Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(120,  graphY - 13, smallestLettersFont, "ALTITUDE - METERS", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(120,  graphY - 13, customSmallFont, "ALTITUDE - M", Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     function drawSpeedLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
         var speed = infos.currentSpeed;
         var speedString = speed.format("%d");
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(graphX+graphWidth/2, graphY, mediumFont, speedString, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(graphX+graphWidth/2, graphY, customMediumFont, speedString, Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(120,  graphY - 13, smallestLettersFont, "SPEED - KM/HR", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(120,  graphY - 13, customSmallFont, "SPEED - KM/HR", Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     function drawHeartRateGraph(dc as Dc) as Void {
@@ -199,7 +199,7 @@ class MonoToneView extends WatchUi.WatchFace {
                     if(x<64){x=64;}
                     if(x>174){x=174;}
                     dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-                    dc.drawText(x, y2-2, smallestFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
+                    dc.drawText(x, y2-2, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
                     mined = true;
                 }
                 if(currentValue.heartRate >= max && !maxed){
@@ -207,7 +207,7 @@ class MonoToneView extends WatchUi.WatchFace {
                     if(x<64){x=64;}
                     if(x>174){x=174;}
                     dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-                    dc.drawText(x, y2-20, smallestFont, max.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
+                    dc.drawText(x, y2-20, customTinyFont, max.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
                     maxed = true;
                 }
             previousValue = currentValue;

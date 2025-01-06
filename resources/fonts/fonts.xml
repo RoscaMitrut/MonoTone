@@ -1,7 +1,6 @@
 <fonts>
-    <font id="custom" filename="custom.fnt"/>
-    <font id="customSmall" filename="customSmall.fnt"/>
-    <font id="customSmallest" filename="customSmallest.fnt"/>
+    <font id="customBig" filename="customBig.fnt"/>
     <font id="customMedium" filename="customMedium.fnt"/>
-    <font id="customSmallestLetters" filename="customSmallestLetters.fnt"/>
+    <font id="customSmall" filename="customSmall.fnt"/>
+    <font id="customTiny" filename="customTiny.fnt"/>
 </fonts>
