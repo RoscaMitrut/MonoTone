@@ -1,4 +1,4 @@
-# MonoTone Watchface for Garmin Fenix 5 Plus
+# MonoTone Watchface
 
 A sleek, minimalist, monotone watchface designed specifically for the Garmin Fenix 5 Plus. This watchface focuses on simplicity and readability, featuring an uncluttered interface.
 
