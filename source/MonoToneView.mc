@@ -143,7 +143,7 @@ class MonoToneView extends WatchUi.WatchFace {
 
     function drawSpeedLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
         var speed = infos.currentSpeed;
-        var speedString = speed.format("%d");
+        var speedString = speed!=null ? (speed*3.6).format("%.1f") : "0.0";
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(graphX+graphWidth/2, graphY, customMediumFont, speedString, Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
