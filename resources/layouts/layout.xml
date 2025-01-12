@@ -1,8 +1,6 @@
 <layout id="WatchFace">
     <drawable class="Background" />
 
-
-
     <label id="BatteryPercentage" x="121" y="21" font="@Fonts.customSmall" color="Graphics.COLOR_DK_GRAY" justification="Graphics.TEXT_JUSTIFY_CENTER"/>
     
     <label id="Hour" x="96" y="52" font="@Fonts.customBig" color="Graphics.COLOR_WHITE" justification="Graphics.TEXT_JUSTIFY_RIGHT" />
@@ -34,4 +32,5 @@
     
     <bitmap id="Notifications" x="127" y="207" filename="../drawables/notifications.png" visible="false"/>
     <bitmap id="NotificationsRed" x="127" y="207" filename="../drawables/notificationsRed.png" visible="false"/>
+
 </layout>

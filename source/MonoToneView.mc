@@ -11,8 +11,7 @@ class MonoToneView extends WatchUi.WatchFace {
     const customTinyFont = WatchUi.loadResource(@Rez.Fonts.customTiny);
     const customSmallFont = WatchUi.loadResource(@Rez.Fonts.customSmall);
     const customMediumFont = WatchUi.loadResource(@Rez.Fonts.customMedium);
-    const customBigFont = WatchUi.loadResource(@Rez.Fonts.customBig);
-    //var fiveMin = new Time.Duration(1200);
+
     const graphX = 54;
     const graphY = 143;
     const graphWidth = 128;
@@ -49,6 +48,7 @@ class MonoToneView extends WatchUi.WatchFace {
         (View.findDrawableById("Month") as Toybox.WatchUi.Text).setText(
             date.month.toUpper()
         );
+
         (View.findDrawableById("Hour") as Toybox.WatchUi.Text).setText(
             date.hour.format("%02d")
         );
@@ -63,6 +63,7 @@ class MonoToneView extends WatchUi.WatchFace {
         (View.findDrawableById("HRAct") as Toybox.WatchUi.Text).setText(
             infos.currentHeartRate ? infos.currentHeartRate.format("%d") : "--"
         );
+
         (View.findDrawableById("Steps") as Toybox.WatchUi.Text).setText(
             info.steps ? info.steps.format("%d") : "0"
         );
@@ -114,7 +115,6 @@ class MonoToneView extends WatchUi.WatchFace {
             case 0x000004:
                 drawAltitudeLabel(dc,infos);
                 break;
-
         }
     }
 
@@ -135,7 +135,6 @@ class MonoToneView extends WatchUi.WatchFace {
         var altitude = infos.altitude;
         var altitudeString = altitude!=null ? altitude.format("%d") : 0;
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        System.println(altitudeString);
         dc.drawText(120, graphY, customMediumFont, altitudeString, Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(120,  graphY - 13, customSmallFont, "ALTITUDE - M", Graphics.TEXT_JUSTIFY_CENTER);
@@ -145,7 +144,7 @@ class MonoToneView extends WatchUi.WatchFace {
         var speed = infos.currentSpeed;
         var speedString = speed!=null ? (speed*3.6).format("%.1f") : "0.0";
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(graphX+graphWidth/2, graphY, customMediumFont, speedString, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(120, graphY, customMediumFont, speedString, Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(120,  graphY - 13, customSmallFont, "SPEED - KM/HR", Graphics.TEXT_JUSTIFY_CENTER);
     }
@@ -154,7 +153,6 @@ class MonoToneView extends WatchUi.WatchFace {
 
         var pixels_per_sample = 8;
         var hrinfo = ActivityMonitor.getHeartRateHistory(graphWidth/pixels_per_sample, true);
-        //var hrinfo = ActivityMonitor.getHeartRateHistory(0, true);
 
         var min = hrinfo.getMin();
         var max = hrinfo.getMax();
