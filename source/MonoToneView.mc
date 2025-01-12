@@ -158,14 +158,11 @@ class MonoToneView extends WatchUi.WatchFace {
         var max = hrinfo.getMax();
     
         var range = max - min + 1;
-        var scaleFactor = (graphHeight<=range) ? 1 : graphHeight / range;
-
-        dc.clear();
-        dc.setPenWidth(2);
+        var scaleFactor = graphHeight/range;
 
         var previousValue = hrinfo.next();
         var currentValue = hrinfo.next();
-        var currentIndex = 1;
+        var currentIndex = 0;
         var mined = false;
         var maxed = false;
 
@@ -177,43 +174,62 @@ class MonoToneView extends WatchUi.WatchFace {
         while (currentValue != null && previousValue != null) {
                 if(currentValue.heartRate == 255 || previousValue.heartRate == 255){
                     previousValue = currentValue;
-                    currentIndex+=pixels_per_sample;
+                    currentIndex++;
                     currentValue = hrinfo.next();
                     continue;
                 }
-                x1 = graphX + currentIndex;
+                x1 = graphX + currentIndex*pixels_per_sample;
                 y1 = graphY + graphHeight - (previousValue.heartRate - min) * scaleFactor;
-                x2 = graphX + currentIndex + pixels_per_sample;
+                x2 = graphX + (currentIndex+1)*pixels_per_sample;
                 y2 = graphY + graphHeight - (currentValue.heartRate - min) * scaleFactor;
                 dc.setPenWidth(3);
-                dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+                dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
                 dc.drawLine(x1, y1, x2, y2);
                 
-                dc.setPenWidth(3);
                 dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
                 dc.drawPoint(x1,y1);
-                if(currentValue.heartRate <= min && !mined){
-                    x = x2;
+
+                if(previousValue.heartRate <= min && !mined){
+                    x = x1;
                     if(x<64){x=64;}
                     if(x>174){x=174;}
                     dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-                    dc.drawText(x, y2-2, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
+                    dc.drawText(x, y1-2, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
                     mined = true;
                 }
-                if(currentValue.heartRate >= max && !maxed){
-                    x = x2;
+                if(previousValue.heartRate >= max && !maxed){
+                    x = x1;
                     if(x<64){x=64;}
                     if(x>174){x=174;}
                     dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-                    dc.drawText(x, y2-20, customTinyFont, max.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
+                    dc.drawText(x, y1-20, customTinyFont, max.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
                     maxed = true;
                 }
+
             previousValue = currentValue;
-            currentIndex+=pixels_per_sample;
+            currentIndex++;
             currentValue = hrinfo.next();
         }
+
+        if(previousValue.heartRate <= min && !mined){
+            x = x2;
+            if(x<64){x=64;}
+            if(x>174){x=174;}
+            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(x, y2-2, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
+            mined = true;
+        }
+        if(previousValue.heartRate >= max && !maxed){
+            x = x2;
+            if(x<64){x=64;}
+            if(x>174){x=174;}
+            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(x, y2-20, customTinyFont, max.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
+            maxed = true;
+        }
+
         dc.setPenWidth(3);
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawPoint(x2,y2);
     }
 
