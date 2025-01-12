@@ -1,5 +1,26 @@
-<properties>
+<resources>
+    <properties>
+        <property id="ExtraWidget" type="number">0x000000</property>
+    </properties>
 
-    <property id="ExtraWidget" type="number">0x000000</property>
-
-</properties>
+    <strings>
+        <string id="ExtraWidget">Extra Widget</string>
+        <string id="hrGraph">Heart Rate Graph</string>
+        <string id="speedLabel">Speed Label</string>
+        <string id="empty">Empty</string>
+        <string id="caloriesLabel">Calories Label</string>
+        <string id="altitudeLabel">Altitude Label</string>
+    </strings>
+    
+    <settings>
+        <setting propertyKey="@Properties.ExtraWidget" title="@Strings.ExtraWidget">
+            <settingConfig type="list">
+                <listEntry value="0x000000">@Strings.empty</listEntry>
+                <listEntry value="0x000001">@Strings.hrGraph</listEntry>
+                <listEntry value="0x000002">@Strings.speedLabel</listEntry>
+                <listEntry value="0x000003">@Strings.caloriesLabel</listEntry>
+                <listEntry value="0x000004">@Strings.altitudeLabel</listEntry>
+            </settingConfig>
+        </setting>    
+    </settings>
+</resources>
