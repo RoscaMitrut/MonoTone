@@ -31,3 +31,33 @@ class MonoToneApp extends Application.AppBase {
 function getApp() as MonoToneApp {
     return Application.getApp() as MonoToneApp;
 }
+
+////////////////////////////////////////////
+    var view=null;
+
+    function onSettingsChanged() as Void {
+        if(view!=null) {
+            view.mySettings.load();
+            WatchUi.requestUpdate();
+        }
+    }
+
+    function onBackgroundData(data) {
+        if(view!=null) {
+            WatchUi.requestUpdate();
+        }
+    }
+
+    function getInitialView() as Array<Views or InputDelegates>? {
+        view = new MonoToneView();
+        if(view.mySettings.hasProperties){
+            return[view, new MonoToneView()] as Array<Views or InputDelegates>;
+        }else{
+            return[view] as Array<Views or InputDelegates>;
+        }
+    }
+
+    function getSettingsView() {
+        var setView=new MonoToneSettingsMenu();
+        return [setView,new MonoToneSettingsMenuDelegate(setView)]  as Array<Views or InputDelegates>;
+    }  

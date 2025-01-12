@@ -310,3 +310,4 @@ class MonoToneView extends WatchUi.WatchFace {
         }
     }
 }
+
