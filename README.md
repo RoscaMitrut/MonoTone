@@ -3,6 +3,8 @@
 - Redo fonts (again haha)
 - Refactor everything
 - Add color themes
+- Look over HR graph
+- Look over draw-ExtraWidget
 
 # MonoTone Watchface
 
