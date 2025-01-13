@@ -2,25 +2,28 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
+import Toybox.Background;
 
 class MonoToneSettings {
     var extraWidgetType = 0x000000;
     var hasProperties=false;
 
     function initialize() {
-        hasProperties=(Toybox.Application has :Properties);
-        load();         
-        loadLocal();    
+        //hasProperties=(Toybox.Application has :Properties);
+        load();         //app
+        loadLocal();    //on-device
     }
 
     function load() {
-        extraWidgetType=readKeyInt("ExtraWidget",0x000000);
     }
 
     function loadLocal() {
+        extraWidgetType=Application.Storage.getValue("extrawidgettype");
+        if(extraWidgetType==null){extraWidgetType=0x000000;}
     }
 
     function saveLocal() {
+        Application.Storage.setValue("extrawidgettype",extraWidgetType);
     }
 
 	hidden function readKeyInt(key,thisDefault) {	
@@ -40,11 +43,22 @@ class MonoToneSettings {
 
 class MonoToneSettingsMenu extends WatchUi.Menu2 {
     var mySettings=null;
+    var widgetNames = [WatchUi.loadResource(@Rez.Strings.empty) as String,
+                        WatchUi.loadResource(@Rez.Strings.hrGraph) as String,
+                        WatchUi.loadResource(@Rez.Strings.speedLabel) as String,
+                        WatchUi.loadResource(@Rez.Strings.caloriesLabel) as String,
+                        WatchUi.loadResource(@Rez.Strings.altitudeLabel) as String,
+                    ] as [String];
+    var extraWidgetMenuItem = null;
 
     function initialize() {
         Menu2.initialize(null);
         mySettings=new MonoToneSettings();
         Menu2.setTitle("Settings");
+    
+        extraWidgetMenuItem = new WatchUi.MenuItem("Extra Widget Type",widgetNames[mySettings.extraWidgetType as Number] as String,"ewt",null);
+
+        Menu2.addItem(extraWidgetMenuItem);
     }
 }
 
@@ -57,8 +71,12 @@ class MonoToneSettingsMenuDelegate extends WatchUi.Menu2InputDelegate {
     }
     
   	function onSelect(item) {
-  		//var id=item.getId();
-	}
+        var id=item.getId();
+  		if(id.equals("ewt"))   {
+            view.mySettings.extraWidgetType= (view.mySettings.extraWidgetType+1) % view.widgetNames.size(); ;
+            view.extraWidgetMenuItem.setSubLabel((view.widgetNames as [String])[view.mySettings.extraWidgetType]);
+            }   	
+		}
     
     function onBack() {
         view.mySettings.saveLocal();

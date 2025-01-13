@@ -21,15 +21,22 @@ class MonoToneView extends WatchUi.WatchFace {
     const RED = 1;
     const BLUE = 2;
 
+    var mySettings;
+
     function initialize() {
         WatchFace.initialize();
+
+        mySettings=new MonoToneSettings();
+
     }
 
     function onLayout(dc as Dc) as Void {
         setLayout(Rez.Layouts.WatchFace(dc));
     }
 
-    function onShow() as Void {}
+    function onShow() as Void {
+        mySettings.loadLocal();
+    }
 
     function onUpdate(dc as Dc) as Void {
         View.onUpdate(dc);
@@ -100,7 +107,7 @@ class MonoToneView extends WatchUi.WatchFace {
             colorBattery(WHITE);
         }
 
-        switch (Application.Properties.getValue("ExtraWidget") as Number){
+        switch (mySettings.extraWidgetType){
             case 0x00000:
                 break;
             case 0x000001:
@@ -119,8 +126,12 @@ class MonoToneView extends WatchUi.WatchFace {
     }
 
     function onHide() as Void {}
-    function onExitSleep() as Void {}
-    function onEnterSleep() as Void {}
+    function onExitSleep() as Void {
+        WatchUi.requestUpdate();
+    }
+    function onEnterSleep() as Void {
+        WatchUi.requestUpdate();
+    }
 
     function drawCaloriesLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
         var calories = infos.calories;
