@@ -1,10 +1,13 @@
 # TODO: 
 
 - Redo fonts (again haha)
-- Refactor everything
+- Refactor everything (also make new stuff easier to implement)
 - Add color themes
 - Look over HR graph
-- Look over draw-ExtraWidget
+- Look over draw-ExtraWidget (Speed and Calories working in simulator, but not on-device)
+- Add more ExtraWidget options (including some API stuff maybe)
+- Look over possible additions
+- Add demo images to README.md
 
 # MonoTone Watchface
 
