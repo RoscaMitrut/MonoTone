@@ -134,6 +134,7 @@ class MonoToneView extends WatchUi.WatchFace {
     }
 
     function drawCaloriesLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
+        // Not working ON-DEVICE
         var calories = infos.calories;
         var caloriesString = calories!=null ? calories.format("%d") : 0;
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
@@ -152,6 +153,7 @@ class MonoToneView extends WatchUi.WatchFace {
     }
 
     function drawSpeedLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
+        // Not working ON-DEVICE
         var speed = infos.currentSpeed;
         var speedString = speed!=null ? (speed*3.6).format("%.1f") : "0.0";
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
@@ -161,7 +163,7 @@ class MonoToneView extends WatchUi.WatchFace {
     }
 
     function drawHeartRateGraph(dc as Dc) as Void {
-
+        // Sometimes graph bugs out: eg. 67-139 ; when watch is not worn, graph can be seen in upper left corner (maybe rollback to older version)
         var pixels_per_sample = 8;
         var hrinfo = ActivityMonitor.getHeartRateHistory(graphWidth/pixels_per_sample, true);
 
