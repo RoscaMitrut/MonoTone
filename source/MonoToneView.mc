@@ -20,7 +20,10 @@ class MonoToneView extends WatchUi.WatchFace {
     const WHITE = 0;
     const RED = 1;
     const BLUE = 2;
+    
     const INVALID_HR_SAMPLE = 255;
+
+    const BATTERY_THRESHOLD = 20;
 
     var mySettings;
 
@@ -102,7 +105,7 @@ class MonoToneView extends WatchUi.WatchFace {
 
         if(systemStats.charging){
             colorBattery(BLUE);
-        }else if(systemStats.battery <= 20){
+        }else if(systemStats.battery <= BATTERY_THRESHOLD){
             colorBattery(RED);
         }else{
             colorBattery(WHITE);
@@ -183,22 +186,26 @@ class MonoToneView extends WatchUi.WatchFace {
         dc.drawText(120,  graphY - 13, customSmallFont, "SPEED - KM/HR", Graphics.TEXT_JUSTIFY_CENTER);
     }
     */
-function scaleValue(value, oldMin, oldMax, newMin, newMax) as Integer {
-    return (((value - oldMin) * (newMin - newMax)) / (oldMax - oldMin)) + newMax;
-}
+    function scaleValue(value as Number, oldMin as Number, oldMax as Number, newMin as Number, newMax as Number) as Number {
+        if (oldMax == oldMin) { return newMin; }
+        return (((value - oldMin) * (newMin - newMax)) / (oldMax - oldMin)) + newMax;
+    }
 
     function drawHeartRateGraph(dc as Dc) as Void {
         var pixels_per_sample = 8;
         var nrOfSamples = graphWidth/pixels_per_sample;
         var hrinfo = ActivityMonitor.getHeartRateHistory(nrOfSamples, true);
+        if (hrinfo == null) { return; }
 
         var targetMin = graphY + 3;
         var targetMax = graphY + graphHeight - 2;
 
         var min = hrinfo.getMin();
         var max = hrinfo.getMax();
-    
+        if (min == null || max == null) { return; }
+
         var previousValue = hrinfo.next();
+        if (previousValue == null) { return; }
         var currentValue = hrinfo.next();
         var currentIndex = 0;
         var mined = false;
@@ -208,145 +215,90 @@ function scaleValue(value, oldMin, oldMax, newMin, newMax) as Integer {
         var y1 = 0;
         var x2 = 0; 
         var y2 = 0;
-        var x = 0;
         while (currentValue != null && previousValue != null) {
-                if(currentValue.heartRate == INVALID_HR_SAMPLE || previousValue.heartRate == INVALID_HR_SAMPLE){
-                    previousValue = currentValue;
-                    currentIndex++;
-                    currentValue = hrinfo.next();
-                    continue;
-                }
-                x1 = graphX + currentIndex*pixels_per_sample;
-                y1 = scaleValue(previousValue.heartRate,min,max,targetMin,targetMax);
-                x2 = graphX + (currentIndex+1)*pixels_per_sample;
-                y2 = scaleValue(currentValue.heartRate,min,max,targetMin,targetMax);
+            if(currentValue.heartRate == INVALID_HR_SAMPLE || previousValue.heartRate == INVALID_HR_SAMPLE){
+                previousValue = currentValue;
+                currentIndex++;
+                currentValue = hrinfo.next();
+                continue;
+            }
+            x1 = graphX + currentIndex*pixels_per_sample;
+            y1 = scaleValue(previousValue.heartRate,min,max,targetMin,targetMax);
+            x2 = graphX + (currentIndex+1)*pixels_per_sample;
+            y2 = scaleValue(currentValue.heartRate,min,max,targetMin,targetMax);
 
-                dc.setPenWidth(3);
-                dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-                dc.drawLine(x1, y1, x2, y2);
+            dc.setPenWidth(3);
+            dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawLine(x1, y1, x2, y2);
                 
-                dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-                dc.drawPoint(x1,y1);
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            dc.drawPoint(x1,y1);
 
-                if(previousValue.heartRate <= min && !mined){
-                    x = x1;
-                    if(x<64){x=64;}
-                    if(x>174){x=174;}
-                    dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-                    dc.drawText(x, y1, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
-                    mined = true;
-                }
-                if(previousValue.heartRate >= max && !maxed){
-                    x = x1;
-                    if(x<64){x=64;}
-                    if(x>174){x=174;}
-                    dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-                    dc.drawText(x, y1-20, customTinyFont, max.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
-                    maxed = true;
-                }
+            drawMinMaxLabels(dc, previousValue, x1, y1, min, max, mined, maxed);
 
             previousValue = currentValue;
             currentIndex++;
             currentValue = hrinfo.next();
         }
 
-        if(previousValue.heartRate <= min && !mined){
-            x = x2;
-            if(x<64){x=64;}
-            if(x>174){x=174;}
-            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(x, y2-2, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
-            mined = true;
-        }
-        if(previousValue.heartRate >= max && !maxed){
-            x = x2;
-            if(x<64){x=64;}
-            if(x>174){x=174;}
-            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(x, y2-20, customTinyFont, max.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
-            maxed = true;
-        }
+        drawMinMaxLabels(dc, previousValue, x2, y2, min, max, mined, maxed);
 
         dc.setPenWidth(3);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawPoint(x2,y2);
     }
 
-    function colorBattery(color as Integer) as Void {
-        switch (color){
-            case WHITE:
-                findDrawableById("Battery").setVisible(true);
-                findDrawableById("BatteryRed").setVisible(false);
-                findDrawableById("BatteryBlue").setVisible(false);
-                (View.findDrawableById("BatteryPercentage") as Toybox.WatchUi.Text).setColor(Graphics.COLOR_DK_GRAY);                
-                break;
-            case RED:
-                findDrawableById("Battery").setVisible(false);
-                findDrawableById("BatteryRed").setVisible(true);
-                findDrawableById("BatteryBlue").setVisible(false);  
-                (View.findDrawableById("BatteryPercentage") as Toybox.WatchUi.Text).setColor(0xff0000);                
+    function drawMinMaxLabels(dc, value, x, y, min, max, mined, maxed){
+        if(value.heartRate <= min && !mined){
+            var x_temp = x;
+            if(x_temp<64){x_temp=64;}
+            if(x_temp>174){x_temp=174;}
+            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(x_temp, y, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
+            mined = true;
+        }
+        if(value.heartRate >= max && !maxed){
+            var x_temp = x;
+            if(x_temp<64){x_temp=64;}
+            if(x_temp>174){x_temp=174;}
+            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(x_temp, y-20, customTinyFont, max.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
+            maxed = true;
+        }
+    }    
 
-                break;
-            case BLUE:
-                findDrawableById("Battery").setVisible(false);
-                findDrawableById("BatteryRed").setVisible(false);
-                findDrawableById("BatteryBlue").setVisible(true);  
-                (View.findDrawableById("BatteryPercentage") as Toybox.WatchUi.Text).setColor(0x0000ff);                
-
-                break;
+    function setIconColor(baseId as String, color as Number) as Void {
+        findDrawableById(baseId).setVisible(color == WHITE);
+        findDrawableById(baseId + "Red").setVisible(color == RED);
+        
+        var blueIcon = findDrawableById(baseId + "Blue");
+        if (blueIcon != null) {
+            blueIcon.setVisible(color == BLUE);
         }
     }
 
-    function colorDnD(color as Integer) as Void {
-        switch (color){
-            case WHITE:
-                findDrawableById("DnD").setVisible(true);
-                findDrawableById("DnDRed").setVisible(false);
-                break;
-            case RED:
-                findDrawableById("DnD").setVisible(false);
-                findDrawableById("DnDRed").setVisible(true);
-                break;
-        }
+    function colorBattery(color as Number) as Void {
+        setIconColor("Battery", color);
+        var textColor = color == RED ? 0xff0000 : 
+                       color == BLUE ? 0x0000ff : 
+                       Graphics.COLOR_DK_GRAY;
+        (View.findDrawableById("BatteryPercentage") as Text).setColor(textColor);
     }
 
-    function colorAlarms(color as Integer) as Void {
-        switch (color){
-            case WHITE:
-                findDrawableById("Alarms").setVisible(true);
-                findDrawableById("AlarmsRed").setVisible(false);
-                break;
-            case RED:
-                findDrawableById("Alarms").setVisible(false);
-                findDrawableById("AlarmsRed").setVisible(true);
-                break;
-        }
+    function colorDnD(color as Number) as Void {
+        setIconColor("DnD", color);
     }
 
-    function colorBluetooth(color as Integer) as Void {
-        switch (color){
-            case WHITE:
-                findDrawableById("Bluetooth").setVisible(true);
-                findDrawableById("BluetoothRed").setVisible(false);
-                break;
-            case RED:
-                findDrawableById("Bluetooth").setVisible(false);
-                findDrawableById("BluetoothRed").setVisible(true);
-                break;
-        }
+    function colorAlarms(color as Number) as Void {
+        setIconColor("Alarms", color);
     }
 
-    function colorNotifications(color as Integer) as Void {
-        switch (color){
-            case WHITE:
-                findDrawableById("Notifications").setVisible(true);
-                findDrawableById("NotificationsRed").setVisible(false);
-                break;
-            case RED:
-                findDrawableById("Notifications").setVisible(false);
-                findDrawableById("NotificationsRed").setVisible(true);
-                break;
-        }
+    function colorBluetooth(color as Number) as Void {
+        setIconColor("Bluetooth", color);
+    }
+
+    function colorNotifications(color as Number) as Void {
+        setIconColor("Notifications", color);
     }
 }
 
