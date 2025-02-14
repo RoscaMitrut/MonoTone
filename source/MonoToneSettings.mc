@@ -44,12 +44,12 @@ class MonoToneSettings {
 
 class MonoToneSettingsMenu extends WatchUi.Menu2 {
     var mySettings=null;
-    var widgetNames = [WatchUi.loadResource(@Rez.Strings.empty) as String,
+    var widgetNames as Array<String> = [WatchUi.loadResource(@Rez.Strings.empty) as String,
                         WatchUi.loadResource(@Rez.Strings.hrGraph) as String,
                         WatchUi.loadResource(@Rez.Strings.caloriesLabel) as String,
                         WatchUi.loadResource(@Rez.Strings.altitudeLabel) as String,
                         //WatchUi.loadResource(@Rez.Strings.speedLabel) as String,
-                    ] as [String];
+                    ] as Array<String>;
     var extraWidgetMenuItem = null;
 
     function initialize() {
