@@ -20,6 +20,7 @@ class MonoToneView extends WatchUi.WatchFace {
     const WHITE = 0;
     const RED = 1;
     const BLUE = 2;
+    const INVALID_HR_SAMPLE = 255;
 
     var mySettings;
 
@@ -182,17 +183,21 @@ class MonoToneView extends WatchUi.WatchFace {
         dc.drawText(120,  graphY - 13, customSmallFont, "SPEED - KM/HR", Graphics.TEXT_JUSTIFY_CENTER);
     }
     */
+function scaleValue(value, oldMin, oldMax, newMin, newMax) as Integer {
+    return (((value - oldMin) * (newMin - newMax)) / (oldMax - oldMin)) + newMax;
+}
+
     function drawHeartRateGraph(dc as Dc) as Void {
-        // Sometimes graph bugs out: eg. 67-139 ; when watch is not worn, graph can be seen in upper left corner (maybe rollback to older version)
         var pixels_per_sample = 8;
-        var hrinfo = ActivityMonitor.getHeartRateHistory(graphWidth/pixels_per_sample, true);
+        var nrOfSamples = graphWidth/pixels_per_sample;
+        var hrinfo = ActivityMonitor.getHeartRateHistory(nrOfSamples, true);
+
+        var targetMin = graphY + 3;
+        var targetMax = graphY + graphHeight - 2;
 
         var min = hrinfo.getMin();
         var max = hrinfo.getMax();
     
-        var range = max - min + 1;
-        var scaleFactor = graphHeight/range;
-
         var previousValue = hrinfo.next();
         var currentValue = hrinfo.next();
         var currentIndex = 0;
@@ -205,16 +210,17 @@ class MonoToneView extends WatchUi.WatchFace {
         var y2 = 0;
         var x = 0;
         while (currentValue != null && previousValue != null) {
-                if(currentValue.heartRate == 255 || previousValue.heartRate == 255){
+                if(currentValue.heartRate == INVALID_HR_SAMPLE || previousValue.heartRate == INVALID_HR_SAMPLE){
                     previousValue = currentValue;
                     currentIndex++;
                     currentValue = hrinfo.next();
                     continue;
                 }
                 x1 = graphX + currentIndex*pixels_per_sample;
-                y1 = graphY + graphHeight - (previousValue.heartRate - min) * scaleFactor;
+                y1 = scaleValue(previousValue.heartRate,min,max,targetMin,targetMax);
                 x2 = graphX + (currentIndex+1)*pixels_per_sample;
-                y2 = graphY + graphHeight - (currentValue.heartRate - min) * scaleFactor;
+                y2 = scaleValue(currentValue.heartRate,min,max,targetMin,targetMax);
+
                 dc.setPenWidth(3);
                 dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
                 dc.drawLine(x1, y1, x2, y2);
@@ -227,7 +233,7 @@ class MonoToneView extends WatchUi.WatchFace {
                     if(x<64){x=64;}
                     if(x>174){x=174;}
                     dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-                    dc.drawText(x, y1-2, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
+                    dc.drawText(x, y1, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
                     mined = true;
                 }
                 if(previousValue.heartRate >= max && !maxed){
