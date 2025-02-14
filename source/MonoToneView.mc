@@ -27,7 +27,6 @@ class MonoToneView extends WatchUi.WatchFace {
         WatchFace.initialize();
 
         mySettings=new MonoToneSettings();
-
     }
 
     function onLayout(dc as Dc) as Void {
@@ -41,11 +40,12 @@ class MonoToneView extends WatchUi.WatchFace {
     function onUpdate(dc as Dc) as Void {
         View.onUpdate(dc);
         var date = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
+
         var systemStats = System.getSystemStats();
         var deviceSettings = System.getDeviceSettings();
         var info = ActivityMonitor.getInfo();
         var infos = Activity.getActivityInfo();
-        
+
         (View.findDrawableById("DayOfWeek") as Toybox.WatchUi.Text).setText(
             date.day_of_week.toUpper()
         );
@@ -117,7 +117,7 @@ class MonoToneView extends WatchUi.WatchFace {
                 drawSpeedLabel(dc,infos);
                 break;
             case 0x000003:
-                drawCaloriesLabel(dc,infos);
+                drawCaloriesLabel(dc,info);
                 break;
             case 0x000004:
                 drawAltitudeLabel(dc,infos);
@@ -132,26 +132,24 @@ class MonoToneView extends WatchUi.WatchFace {
     function onEnterSleep() as Void {
         WatchUi.requestUpdate();
     }
+    function drawAltitudeLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
+        var altitude = infos.altitude;
+        var altitudeString = altitude!=null ? altitude.format("%d") : 0;
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(120, graphY, customMediumFont, altitudeString, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT); 
+        dc.drawText(120,  graphY - 13, customSmallFont, "ALTITUDE - M", Graphics.TEXT_JUSTIFY_CENTER);
+    }
 
-    function drawCaloriesLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
-        // Not working ON-DEVICE
-        var calories = infos.calories;
+
+    function drawCaloriesLabel(dc as Dc, info as Toybox.ActivityMonitor.Info) as Void {
+        var calories = info.calories;
         var caloriesString = calories!=null ? calories.format("%d") : 0;
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(120, graphY, customMediumFont, caloriesString, Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(120,  graphY - 13, customSmallFont, "CALORIES - KCAL", Graphics.TEXT_JUSTIFY_CENTER);
     }
-
-    function drawAltitudeLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
-        var altitude = infos.altitude;
-        var altitudeString = altitude!=null ? altitude.format("%d") : 0;
-        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(120, graphY, customMediumFont, altitudeString, Graphics.TEXT_JUSTIFY_CENTER);
-        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(120,  graphY - 13, customSmallFont, "ALTITUDE - M", Graphics.TEXT_JUSTIFY_CENTER);
-    }
-
     function drawSpeedLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
         // Not working ON-DEVICE
         var speed = infos.currentSpeed;

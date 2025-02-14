@@ -4,11 +4,11 @@
     </properties>
 
     <strings>
-        <string id="hrGraph">Heart Rate Graph</string>
-        <string id="speedLabel">Speed Label</string>
-        <string id="empty">Empty</string>
-        <string id="caloriesLabel">Calories Label</string>
-        <string id="altitudeLabel">Altitude Label</string>
+        <string id="empty">Empty</string> <!--0x000000-->
+        <string id="hrGraph">Heart Rate Graph</string> <!--0x000001-->
+        <string id="speedLabel">Speed Label</string> <!--0x000002-->
+        <string id="caloriesLabel">Calories Label</string> <!--0x000003-->
+        <string id="altitudeLabel">Altitude Label</string> <!--0x000004-->
     </strings>
 
 </resources>

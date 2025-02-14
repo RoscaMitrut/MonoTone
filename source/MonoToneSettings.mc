@@ -25,7 +25,7 @@ class MonoToneSettings {
     function saveLocal() {
         Application.Storage.setValue("extrawidgettype",extraWidgetType);
     }
-
+/*
 	hidden function readKeyInt(key,thisDefault) {	
 	    var value=null;
         try {
@@ -39,6 +39,7 @@ class MonoToneSettings {
     	}    	
 		return value;    
 	}
+*/
 }
 
 class MonoToneSettingsMenu extends WatchUi.Menu2 {
