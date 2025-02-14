@@ -114,14 +114,16 @@ class MonoToneView extends WatchUi.WatchFace {
                 drawHeartRateGraph(dc);
                 break;
             case 0x000002:
-                drawSpeedLabel(dc,infos);
-                break;
-            case 0x000003:
                 drawCaloriesLabel(dc,info);
                 break;
-            case 0x000004:
+            case 0x000003:
                 drawAltitudeLabel(dc,infos);
                 break;
+            /*
+            case 0x000004:
+                drawSpeedLabel(dc,infos);
+                break;
+            */
         }
     }
 
@@ -132,6 +134,7 @@ class MonoToneView extends WatchUi.WatchFace {
     function onEnterSleep() as Void {
         WatchUi.requestUpdate();
     }
+
     function drawAltitudeLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
         var altitude = infos.altitude;
         var altitudeString = altitude!=null ? altitude.format("%d") : 0;
@@ -141,7 +144,6 @@ class MonoToneView extends WatchUi.WatchFace {
         dc.drawText(120,  graphY - 13, customSmallFont, "ALTITUDE - M", Graphics.TEXT_JUSTIFY_CENTER);
     }
 
-
     function drawCaloriesLabel(dc as Dc, info as Toybox.ActivityMonitor.Info) as Void {
         var calories = info.calories;
         var caloriesString = calories!=null ? calories.format("%d") : 0;
@@ -150,8 +152,11 @@ class MonoToneView extends WatchUi.WatchFace {
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(120,  graphY - 13, customSmallFont, "CALORIES - KCAL", Graphics.TEXT_JUSTIFY_CENTER);
     }
+    /*
+    The speed label is working as expected in the simulator while using Activity.Info and Position.getInfo() and crashing when using Sensor.getInfo().
+    On the physical watch, Sensor.getInfo() is still crashing, Activity.Info is showing 0.0 constantly and Position.getInfo() is showing huge numbers.
+
     function drawSpeedLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
-        // Not working ON-DEVICE
         var speed = infos.currentSpeed;
         var speedString = speed!=null ? (speed*3.6).format("%.1f") : "0.0";
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
@@ -159,7 +164,24 @@ class MonoToneView extends WatchUi.WatchFace {
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(120,  graphY - 13, customSmallFont, "SPEED - KM/HR", Graphics.TEXT_JUSTIFY_CENTER);
     }
-
+    function drawSpeedLabel(dc as Dc) as Void {
+        var speed = Position.getInfo().speed;
+        var speedString = speed!=null ? (speed*3.6).format("%.1f") : "0.0";
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(120, graphY, customMediumFont, speedString, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(120,  graphY - 13, customSmallFont, "SPEED - KM/HR", Graphics.TEXT_JUSTIFY_CENTER);
+    }    
+    function drawSpeedLabel(dc as Dc) as Void {
+        var sensorInfo = Sensor.getInfo();
+        var speed = sensorInfo.speed;
+        var speedString = speed!=null ? (speed*3.6).format("%.1f") : "0.0";
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(120, graphY, customMediumFont, speedString, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(120,  graphY - 13, customSmallFont, "SPEED - KM/HR", Graphics.TEXT_JUSTIFY_CENTER);
+    }
+    */
     function drawHeartRateGraph(dc as Dc) as Void {
         // Sometimes graph bugs out: eg. 67-139 ; when watch is not worn, graph can be seen in upper left corner (maybe rollback to older version)
         var pixels_per_sample = 8;
