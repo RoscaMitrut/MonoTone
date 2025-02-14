@@ -153,8 +153,8 @@ class MonoToneView extends WatchUi.WatchFace {
         dc.drawText(120,  graphY - 13, customSmallFont, "CALORIES - KCAL", Graphics.TEXT_JUSTIFY_CENTER);
     }
     /*
-    The speed label is working as expected in the simulator while using Activity.Info and Position.getInfo() and crashing when using Sensor.getInfo().
-    On the physical watch, Sensor.getInfo() is still crashing, Activity.Info is showing 0.0 constantly and Position.getInfo() is showing huge numbers.
+    The speed label is working as expected in the simulator while using Activity.Info.getActivityInfo() and Position.getInfo() and crashing when using Sensor.getInfo().
+    On the physical watch, Sensor.getInfo() is still crashing, Activity.Info.getActivityInfo() is showing 0.0 constantly and Position.getInfo() is showing huge numbers.
 
     function drawSpeedLabel(dc as Dc, infos as Toybox.Activity.Info) as Void {
         var speed = infos.currentSpeed;
