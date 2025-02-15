@@ -195,21 +195,20 @@ class MonoToneView extends WatchUi.WatchFace {
         var pixels_per_sample = 8;
         var nrOfSamples = graphWidth/pixels_per_sample;
         var hrinfo = ActivityMonitor.getHeartRateHistory(nrOfSamples, true);
-        if (hrinfo == null) { return; }
 
         var targetMin = graphY + 3;
         var targetMax = graphY + graphHeight - 2;
 
         var min = hrinfo.getMin();
         var max = hrinfo.getMax();
-        if (min == null || max == null) { return; }
+        if (min == null || max == null || min == INVALID_HR_SAMPLE || max == INVALID_HR_SAMPLE) { return; }
 
         var previousValue = hrinfo.next();
         if (previousValue == null) { return; }
         var currentValue = hrinfo.next();
         var currentIndex = 0;
-        var mined = false;
-        var maxed = false;
+        var mined = [false];
+        var maxed = [false];
 
         var x1 = 0;
         var y1 = 0;
@@ -240,6 +239,7 @@ class MonoToneView extends WatchUi.WatchFace {
             currentIndex++;
             currentValue = hrinfo.next();
         }
+        if(currentIndex == 0){return;}
 
         drawMinMaxLabels(dc, previousValue, x2, y2, min, max, mined, maxed);
 
@@ -248,22 +248,22 @@ class MonoToneView extends WatchUi.WatchFace {
         dc.drawPoint(x2,y2);
     }
 
-    function drawMinMaxLabels(dc, value, x, y, min, max, mined, maxed){
-        if(value.heartRate <= min && !mined){
+    function drawMinMaxLabels(dc, value, x, y, min, max, mined as [Boolean], maxed as [Boolean]){
+        if(value.heartRate <= min && !mined[0]){
             var x_temp = x;
             if(x_temp<64){x_temp=64;}
             if(x_temp>174){x_temp=174;}
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawText(x_temp, y, customTinyFont , min.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
-            mined = true;
+            mined[0] = true;
         }
-        if(value.heartRate >= max && !maxed){
+        if(value.heartRate >= max && !maxed[0]){
             var x_temp = x;
             if(x_temp<64){x_temp=64;}
             if(x_temp>174){x_temp=174;}
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawText(x_temp, y-20, customTinyFont, max.format("%d"), Graphics.TEXT_JUSTIFY_CENTER);
-            maxed = true;
+            maxed[0] = true;
         }
     }    
 
